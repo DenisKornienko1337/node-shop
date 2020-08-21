@@ -34,7 +34,7 @@ const localStrategy = require('passport-local').Strategy
 /**
  * @app_middle
  */
-app.set('io', io)
+// app.set('io', io)
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
