@@ -14,17 +14,17 @@ const cookieParser = require('cookie-parser')
 
 const localStrategy = require('passport-local').Strategy
 
-app.use(session({
-    secret: 'development',
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-        httpOnly: true,
-        path: '/',
-        secure: false
-    }
-}))
+// app.use(session({
+//     secret: 'development',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: store,
+//     cookie: {
+//         httpOnly: true,
+//         path: '/',
+//         secure: false
+//     }
+// }))
 
 /**
  * @connect
