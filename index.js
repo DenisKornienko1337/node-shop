@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 const cookieParser = require('cookie-parser')
 
+
 const localStrategy = require('passport-local').Strategy
 
 // app.use(session({
@@ -45,6 +46,9 @@ app.use(bodyParser.json())
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+const authRoutes = require('./routes/auth.js')
+app.use('/auth', authRoutes)
 
 passport.serializeUser((user, done) => {
   done(null, user)
