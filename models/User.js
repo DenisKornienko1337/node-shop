@@ -9,14 +9,16 @@ const User = sequelize.define('user', {
     autoIncrement: true,
     allowNull: false
   },
-  email: {
+  username: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  hash: {
+  password: {
     type: Sequelize.TEXT,
     allowNull: false
-  }
+  },
+}, {
+    timestamps: false
 });
 
 module.exports = User;
