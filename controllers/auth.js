@@ -1,9 +1,31 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
-
+const passport = require('passport')
 exports.check = (req, res) => {
     res.send({'hello': 'world'})
+}
+
+exports.logIn = (req, res, next) => {
+    passport.authenticate('local', function (error, user, info) {
+        console.log(error)
+        console.log(user)
+        console.log(info)
+        if (error) {
+          res.status(401).send(error);
+          return 
+        } else if (!user) {
+          res.status(401).send(info);
+          return
+        } else {
+          //next();
+        }
+        req.login(user, function(err){
+            console.log(user)
+            req.session.user = user
+        })
+        res.status(200).send(info);
+      })(req, res);
 }
 
 exports.addUser = async (req, res) => {
