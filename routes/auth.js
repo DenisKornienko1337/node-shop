@@ -3,8 +3,9 @@ const app = express()
 const passport  = require('passport')
 const router  = express.Router()
 const authController = require('../controllers/auth.js')
+let isAuth = require('../middleware/auth')
 
-router.get('/check', authController.check)
+router.get('/check', isAuth, authController.check)
 
 router.post('/add-user', authController.addUser)
 
@@ -16,5 +17,6 @@ router.get('/google',
     console.log('Success!!!')
     res.redirect('/');
   });
-  
+
+router.get('/logout', isAuth, authController.logOut)
   module.exports = router

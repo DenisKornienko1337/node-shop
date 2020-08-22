@@ -50,6 +50,11 @@ exports.addUser = async (req, res) => {
     });
 }
 
+exports.logOut = (req, res) => {
+    req.logout()
+    res.redirect('http://localhost:8081/auth/check')
+}
+
 // exports.find = (req, res) => {
 //     User.findAll({
 //         where: 
