@@ -11,11 +11,15 @@ const User = sequelize.define('user', {
   },
   username: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   },
   password: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: true
+  },
+  googleId: {
+    type: Sequelize.TEXT,
+    allowNull: true
   },
 }, {
     timestamps: false

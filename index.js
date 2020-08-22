@@ -1,5 +1,3 @@
-
-
 /**
  * @modules
  */
@@ -16,6 +14,10 @@ const saltRounds = 10
 const cookieParser = require('cookie-parser')
 const User = require('./models/User')
 const localStrategy = require('passport-local').Strategy
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+
+const GOOGLE_CLIENT_ID = '377248449724-cbkjkip70p9ctb02ko37crihr4jqs07n'
+const GOOGLE_CLIENT_SECRET = 'DUXXOvZcErGo6wd6Cqb6rEwE'
 
 const sqlSessionStore = new SessionStore({
   db: sequelize,
@@ -81,6 +83,30 @@ passport.use(new localStrategy(async(username, password, done) => {
     else return done(null, false, { message: 'Incorrect password.' });
   })
 }));
+
+passport.use(new GoogleStrategy({
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:8081/auth/google"
+},
+function(accessToken, refreshToken, profile, done) {
+  User.findOne({where: {googleId: profile.id}})
+    .then(user => {
+      console.log('User:', user)
+      if(user) {
+        return done(null, user);
+      } else {
+        User.create({
+          googleId: profile.id
+        })
+        .then(newUser => {
+          return done(null, newUser);
+        })
+      }
+    })
+    .catch(err => console.log(err))
+}
+));
 
 app.listen(8081, () => {
 

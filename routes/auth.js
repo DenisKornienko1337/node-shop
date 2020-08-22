@@ -9,4 +9,12 @@ router.get('/check', authController.check)
 router.post('/add-user', authController.addUser)
 
 router.post('/login', authController.logIn)
-module.exports = router
+
+router.get('/google', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log('Success!!!')
+    res.redirect('/');
+  });
+  
+  module.exports = router
