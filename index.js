@@ -11,6 +11,7 @@ const SessionStore = require('express-session-sequelize')(session.Store);
 const passport = require('passport')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
+var cors = require('cors')
 const cookieParser = require('cookie-parser')
 const User = require('./models/User')
 const localStrategy = require('passport-local').Strategy
@@ -18,11 +19,16 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const GOOGLE_CLIENT_ID = '377248449724-cbkjkip70p9ctb02ko37crihr4jqs07n'
 const GOOGLE_CLIENT_SECRET = 'DUXXOvZcErGo6wd6Cqb6rEwE'
+var corsOptions = {
+  origin: 'http://localhost:8080',
+}
+app.use(cors(corsOptions))
 
 const sqlSessionStore = new SessionStore({
   db: sequelize,
 })
 app.use(cookieParser())
+
 
 app.use(session({
     secret: 'development',
