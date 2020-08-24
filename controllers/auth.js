@@ -67,27 +67,18 @@ exports.sendTempPass = (req, res) => {
            pass: '63ba4f09ca3d22'
         }
     });
-    let pass = generatePassword(8)
     let fullUrl = req.get('host') + req.originalUrl
-
     let arrUserUrl = fullUrl.split('/')
     delete arrUserUrl[arrUserUrl.length-1]
     addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
-    loginUserUrl = 'http://'+arrUserUrl.join('/')+'login'
 
     axios.post(addUserUrl, {
         username: req.query.email,
-        password: pass,
-    })
-    .then(() => {
-        axios.post(loginUserUrl, {
-            username: req.query.email,
-            password: pass,
-        })
+        password: req.query.password,
     })
     const message = {
         from: '331872a603-9383b4@inbox.mailtrap.io',
-        to: req.query.email,
+        to: req.query.password,
         subject: 'Registration on Nuxt Shop',
         text: `Get your temporary password! ${pass}`
     };
