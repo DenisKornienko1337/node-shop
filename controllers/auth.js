@@ -107,6 +107,7 @@ exports.sendTempPass = (req, res) => {
 exports.changePassword = (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
         User.findOne({where: {username: req.user.username}})
+        .then()
     });
 }
 
