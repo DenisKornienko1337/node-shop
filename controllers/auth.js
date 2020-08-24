@@ -69,26 +69,28 @@ exports.sendTempPass = (req, res) => {
     });
     let pass = generatePassword(8)
     let fullUrl = req.get('host') + req.originalUrl
-    let addUserUrl = fullUrl.split('/')
-    delete addUserUrl[addUserUrl.length-1]
-    console.log('http://'+addUserUrl.join('/'))
+
+    let arrUserUrl = fullUrl.split('/')
+    delete arrUserUrl[arrUserUrl.length-1]
+    addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
+
     const message = {
         from: '331872a603-9383b4@inbox.mailtrap.io',
         to: req.query.email,
         subject: 'Registration on Nuxt Shop',
         text: `Get your temporary password! ${pass}`
     };
-    // transport.sendMail(message, function(err, info) {
-    //     if (err) {
-    //       console.log(err)
-    //       res.send(true)
-    //       res.sendStatus(500)
-    //     } else {
-    //       console.log(info);
-    //       res.send(true)
-    //       res.sendStatus(200)
-    //     }
-    // });
+    transport.sendMail(message, function(err, info) {
+        if (err) {
+          console.log(err)
+          res.send(true)
+          res.sendStatus(500)
+        } else {
+          console.log(info);
+          res.send(true)
+          res.sendStatus(200)
+        }
+    });
 }
 
 function generatePassword(length) {
