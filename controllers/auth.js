@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 const passport = require('passport')
 const nodemailer = require('nodemailer')
+const axios = require('axios')
 
 exports.check = (req, res) => {
     res.send({'hello': 'world'})
@@ -66,21 +67,35 @@ exports.sendTempPass = (req, res) => {
            pass: '63ba4f09ca3d22'
         }
     });
+    let pass = generatePassword(8)
+    let fullUrl = req.get('host') + req.originalUrl
+    let addUserUrl = fullUrl.split('/')
+    delete addUserUrl[addUserUrl.length-1]
+    console.log('http://'+addUserUrl.join('/'))
     const message = {
-        from: '331872a603-9383b4@inbox.mailtrap.io', // Sender address
-        to: req.query.email,         // List of recipients
-        subject: 'Registration on Nuxt Shop', // Subject line
-        text: `Get your temporary password!` // Plain text body
+        from: '331872a603-9383b4@inbox.mailtrap.io',
+        to: req.query.email,
+        subject: 'Registration on Nuxt Shop',
+        text: `Get your temporary password! ${pass}`
     };
-    transport.sendMail(message, function(err, info) {
-        if (err) {
-          console.log(err)
-          res.sendStatus(500)
-          res.send(true)
-        } else {
-          console.log(info);
-          res.sendStatus(200)
-          res.send(true)
-        }
-    });
+    // transport.sendMail(message, function(err, info) {
+    //     if (err) {
+    //       console.log(err)
+    //       res.send(true)
+    //       res.sendStatus(500)
+    //     } else {
+    //       console.log(info);
+    //       res.send(true)
+    //       res.sendStatus(200)
+    //     }
+    // });
+}
+
+function generatePassword(length) {
+    let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let retVal = ""
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
 }
