@@ -76,11 +76,11 @@ exports.sendTempPass = (req, res) => {
         if (err) {
           console.log(err)
           res.sendStatus(500)
-          return false
+          res.send(true)
         } else {
           console.log(info);
           res.sendStatus(200)
-          return true
+          res.send(true)
         }
     });
 }
