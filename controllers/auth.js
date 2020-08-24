@@ -73,9 +73,17 @@ exports.sendTempPass = (req, res) => {
     let arrUserUrl = fullUrl.split('/')
     delete arrUserUrl[arrUserUrl.length-1]
     addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
+    loginUserUrl = 'http://'+arrUserUrl.join('/')+'login'
+
     axios.post(addUserUrl, {
         username: req.query.email,
         password: pass,
+    })
+    .then(() => {
+        axios.post(loginUserUrl, {
+            username: req.query.email,
+            password: pass,
+        })
     })
     const message = {
         from: '331872a603-9383b4@inbox.mailtrap.io',
@@ -93,6 +101,12 @@ exports.sendTempPass = (req, res) => {
           res.send(true)
           res.sendStatus(200)
         }
+    });
+}
+
+exports.changePassword = (req, res) => {
+    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+        User.findOne({where: {username: req.user.username}})
     });
 }
 

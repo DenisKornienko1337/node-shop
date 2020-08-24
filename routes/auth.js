@@ -20,4 +20,6 @@ router.get('/google',
 
 router.get('/send-temp-pass', authController.sendTempPass)
 router.get('/logout', isAuth, authController.logOut)
+
+router.post('/change-pass', authController.changePassword)
   module.exports = router
