@@ -82,7 +82,7 @@ exports.sendTempPass = (req, res) => {
         from: '331872a603-9383b4@inbox.mailtrap.io',
         to: req.query.email,
         subject: 'Registration on Nuxt Shop',
-        text: `Get your temporary password! ${password}`
+        text: `Get your temporary password! ${req.query.password}`
     };
     transport.sendMail(message, function(err, info) {
         if (err) {
