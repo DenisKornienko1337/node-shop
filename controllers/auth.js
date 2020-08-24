@@ -73,9 +73,6 @@ exports.sendTempPass = (req, res) => {
     let arrUserUrl = fullUrl.split('/')
     delete arrUserUrl[arrUserUrl.length-1]
     addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
-    try {
-        
-    }
     axios.post(addUserUrl, {
         username: req.query.email,
         password: pass,
