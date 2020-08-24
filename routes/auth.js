@@ -18,5 +18,6 @@ router.get('/google',
     res.redirect('/');
   });
 
+router.get('/send-temp-pass', authController.sendTempPass)
 router.get('/logout', isAuth, authController.logOut)
   module.exports = router

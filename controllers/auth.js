@@ -2,6 +2,8 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 const passport = require('passport')
+const nodemailer = require('nodemailer')
+
 exports.check = (req, res) => {
     res.send({'hello': 'world'})
 }
@@ -55,8 +57,28 @@ exports.logOut = (req, res) => {
     res.redirect('http://localhost:8081/auth/check')
 }
 
-// exports.find = (req, res) => {
-//     User.findAll({
-//         where: 
-//     })
-// }
+exports.sendTempPass = (req, res) => {
+    let transport = nodemailer.createTransport({
+        host: 'smtp.mailtrap.io',
+        port: 2525,
+        auth: {
+           user: 'b9a70d9884e11b',
+           pass: '63ba4f09ca3d22'
+        }
+    });
+    const message = {
+        from: '331872a603-9383b4@inbox.mailtrap.io', // Sender address
+        to: req.query.email,         // List of recipients
+        subject: 'Registration on Nuxt Shop', // Subject line
+        text: `Get your temporary password!` // Plain text body
+    };
+    transport.sendMail(message, function(err, info) {
+        if (err) {
+          console.log(err)
+          res.sendStatus(500)
+        } else {
+          console.log(info);
+          res.sendStatus(200)
+        }
+    });
+}
