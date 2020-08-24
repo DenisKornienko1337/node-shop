@@ -26,6 +26,7 @@ exports.logIn = (req, res, next) => {
         req.login(user, function(err){
             console.log(user)
             req.session.user = user
+            console.log('req.session.user', req.session.user)
         })
         res.status(200).send(info);
       })(req, res);
