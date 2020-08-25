@@ -4,6 +4,19 @@ const saltRounds = 10
 const passport = require('passport')
 const nodemailer = require('nodemailer')
 const axios = require('axios')
+const sendmail = require('sendmail')()
+
+exports.mail = (req, res) => {
+    sendmail({
+        from: 'd.kornienko1337@gmail.com',
+        to: 'd.kornienko1337@gmail.com',
+        subject: 'test sendmail',
+        html: 'Mail of test sendmail ',
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    })
+}
 
 exports.check = (req, res) => {
     res.send(true)
@@ -56,7 +69,7 @@ exports.addUser = async (req, res) => {
 
 exports.logOut = (req, res) => {
     req.logout()
-    res.redirect('http://localhost:8081/auth/check')
+    return res.sendStatus(200)
 }
 
 exports.sendTempPass = (req, res) => {
@@ -88,7 +101,7 @@ exports.sendTempPass = (req, res) => {
     transport.sendMail(message, function(err, info) {
         if (err) {
           console.log(err)
-          res.send(true)
+          res.send(false)
           res.sendStatus(500)
         } else {
           console.log(info);
@@ -100,8 +113,13 @@ exports.sendTempPass = (req, res) => {
 
 exports.changePassword = (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        User.findOne({where: {username: req.user.username}})
-        .then()
+        User.update({password: hash}, {where: {username: req.user.username}})
+        .catch(err => {
+            console.log('Err update', err)
+            return res.sendStatus(500)
+        })
+        req.logout()
+        return res.sendStatus(200)
     });
 }
 

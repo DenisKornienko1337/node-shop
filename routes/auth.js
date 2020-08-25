@@ -4,6 +4,7 @@ const passport  = require('passport')
 const router  = express.Router()
 const authController = require('../controllers/auth.js')
 let isAuth = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
 router.get('/check', isAuth, authController.check)
 
@@ -22,4 +23,7 @@ router.get('/send-temp-pass', authController.sendTempPass)
 router.get('/logout', isAuth, authController.logOut)
 
 router.post('/change-pass', authController.changePassword)
+
+router.get('/mail', authController.mail)
+
   module.exports = router
