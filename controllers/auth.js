@@ -1,5 +1,3 @@
-//ILUHHAAAAA
-
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
@@ -8,7 +6,7 @@ const nodemailer = require('nodemailer')
 const axios = require('axios')
 
 exports.check = (req, res) => {
-    res.send({'hello': 'world'})
+    res.send(true)
 }
 
 exports.logIn = (req, res, next) => {
