@@ -40,7 +40,7 @@ app.use(session({
     saveUninitialized: false,
     store: sqlSessionStore,
     cookie: {
-        httpOnly: true,
+        httpOnly: false,
         path: '/',
         secure: false
     }
