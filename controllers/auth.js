@@ -73,42 +73,23 @@ exports.logOut = (req, res) => {
 }
 
 exports.sendTempPass = (req, res) => {
-    let transport = nodemailer.createTransport({
-        host: 'smtp.mailtrap.io',
-        port: 2525,
-        auth: {
-           user: 'b9a70d9884e11b',
-           pass: '63ba4f09ca3d22'
-        }
-    });
-    let pass = generatePassword(8)
     let fullUrl = req.get('host') + req.originalUrl
-
     let arrUserUrl = fullUrl.split('/')
     delete arrUserUrl[arrUserUrl.length-1]
     addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
-
     axios.post(addUserUrl, {
         username: req.query.email,
         password: req.query.password,
     })
-    const message = {
-        from: '331872a603-9383b4@inbox.mailtrap.io',
+    sendmail({
+        from: 'd.kornienko1337@gmail.com',
         to: req.query.email,
-        subject: 'Registration on Nuxt Shop',
-        text: `Get your temporary password! ${req.query.password}`
-    };
-    transport.sendMail(message, function(err, info) {
-        if (err) {
-          console.log(err)
-          res.send(false)
-          res.sendStatus(500)
-        } else {
-          console.log(info);
-          res.send(true)
-          res.sendStatus(200)
-        }
-    });
+        subject: 'Temp pass for Nuxt Shop',
+        html: 'Mail of test sendmail ',
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    })
 }
 
 exports.changePassword = (req, res) => {
@@ -121,13 +102,4 @@ exports.changePassword = (req, res) => {
         req.logout()
         return res.sendStatus(200)
     });
-}
-
-function generatePassword(length) {
-    let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    let retVal = ""
-    for (var i = 0, n = charset.length; i < length; ++i) {
-        retVal += charset.charAt(Math.floor(Math.random() * n));
-    }
-    return retVal;
 }
