@@ -6,16 +6,23 @@ const nodemailer = require('nodemailer')
 const axios = require('axios')
 const sendmail = require('sendmail')()
 
-exports.mail = (req, res) => {
-    sendmail({
-        from: 'd.kornienko1337@gmail.com',
-        to: 'd.kornienko1337@gmail.com',
-        subject: 'test sendmail',
-        html: 'Mail of test sendmail ',
-      }, function(err, reply) {
-        console.log(err && err.stack);
-        console.dir(reply);
+async function addUser(username, password) {
+    if(!username || !password) return false
+    let user = await User.findOne({where: {username: username}})
+    console.log('user', user)
+    if(user) return false
+    const hash = await new Promise((resolve, reject) => {
+        bcrypt.hash(password, saltRounds, function(err, hash) {
+          if (err) reject(err)
+          resolve(hash)
+        });
+      })
+      console.log('hash', hash)
+      User.create({
+        username: username,
+        password: hash,
     })
+    return true
 }
 
 exports.check = (req, res) => {
@@ -46,25 +53,9 @@ exports.logIn = (req, res, next) => {
 }
 
 exports.addUser = async (req, res) => {
-    if(!req.body.username || !req.body.password) res.sendStatus(500)
-    console.log(req.body.username)
-    let user = await User.findOne({where: {username: req.body.username}})
-    if(user){
-        console.log('Error!')
-        res.sendStatus(500)
-        return
-    }
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        User.create({
-            username: req.body.username,
-            password: hash,
-        })
-        .then(r => {
-            console.log('User added!')
-            res.sendStatus(200)
-        })
-        .catch(err => console.log(err))
-    });
+    let isAdded= await addUser(req.body.username, req.body.password)
+    if(!isAdded) res.status(500).send(false)
+    else res.status(200).send(true)
 }
 
 exports.logOut = (req, res) => {
@@ -72,24 +63,26 @@ exports.logOut = (req, res) => {
     return res.sendStatus(200)
 }
 
-exports.sendTempPass = (req, res) => {
-    let fullUrl = req.get('host') + req.originalUrl
-    let arrUserUrl = fullUrl.split('/')
-    delete arrUserUrl[arrUserUrl.length-1]
-    addUserUrl = 'http://'+arrUserUrl.join('/')+'add-user'
-    axios.post(addUserUrl, {
-        username: req.query.email,
-        password: req.query.password,
-    })
-    sendmail({
-        from: 'd.kornienko1337@gmail.com',
-        to: req.query.email,
-        subject: 'Temp pass for Nuxt Shop',
-        html: 'Mail of test sendmail ',
-      }, function(err, reply) {
-        console.log(err && err.stack);
-        console.dir(reply);
-    })
+exports.sendTempPass = async (req, res) => {
+    let isAdded = await addUser(req.query.email, req.query.password)
+    console.log('isadded from sendmail', isAdded)
+    console.log('Req query email', req.query.email)
+    if(!isAdded) res.status(500).send(false)
+    if(isAdded) {
+        let mailOpts = {
+            from: 'd.kornienko1337@gmail.com',
+            to: req.query.email,
+            subject: 'Temp pass for Nuxt Shop',
+            html: 'Your temp pass is:'+req.query.password,
+          }
+        sendmail(mailOpts, function(err) {
+              if(err){
+                  console.log('Error from mail!', err)
+                  return res.status(500).send(false)
+              }
+        })
+    }
+    res.status(200).send(true)
 }
 
 exports.changePassword = (req, res) => {

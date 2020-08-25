@@ -24,6 +24,4 @@ router.get('/logout', isAuth, authController.logOut)
 
 router.post('/change-pass', authController.changePassword)
 
-router.get('/mail', authController.mail)
-
   module.exports = router
