@@ -19,8 +19,10 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const GOOGLE_CLIENT_ID = '377248449724-cbkjkip70p9ctb02ko37crihr4jqs07n'
 const GOOGLE_CLIENT_SECRET = 'DUXXOvZcErGo6wd6Cqb6rEwE'
+
 var corsOptions = {
   origin: 'http://localhost:8080',
+  credentials: true,
 }
 app.use(cors(corsOptions))
 
@@ -29,6 +31,8 @@ const sqlSessionStore = new SessionStore({
 })
 app.use(cookieParser())
 
+
+//ssljdjdlfmjke
 
 app.use(session({
     secret: 'development',
