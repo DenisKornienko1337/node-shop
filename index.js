@@ -31,9 +31,6 @@ const sqlSessionStore = new SessionStore({
 })
 app.use(cookieParser())
 
-
-//ssljdjdlfmjke
-
 app.use(session({
     secret: 'development',
     resave: false,
@@ -71,8 +68,10 @@ app.use(passport.session()); // persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
 
-const authRoutes = require('./routes/auth.js')
+const authRoutes = require('./routes/auth')
+const apiRoutes = require('./routes/api')
 app.use('/auth', authRoutes)
+app.use('/api', apiRoutes)
 
 passport.serializeUser((user, done) => {
   done(null, user)

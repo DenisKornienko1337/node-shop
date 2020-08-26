@@ -1,29 +1,23 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/dbconnect');
-const Product = require('../models/Product')
 
-const User = sequelize.define('user', {
+const Customer = sequelize.define('customer', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
   },
-  username: {
+  cart_id: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  name: {
     type: Sequelize.STRING,
-    allowNull: true
-  },
-  password: {
-    type: Sequelize.TEXT,
-    allowNull: true
-  },
-  googleId: {
-    type: Sequelize.TEXT,
     allowNull: true
   },
 }, {
     timestamps: false
 });
 
-
-module.exports = User;
+module.exports = Customer;
