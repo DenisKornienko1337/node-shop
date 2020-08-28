@@ -4,12 +4,13 @@ const Customer = require('../models/Customer')
 const Merchant = require('../models/Merchant')
 const Product = require('../models/Product')
 const User = require('../models/User')
+const ProductCart = require('../models/ProductCart')
 
 async function formatProducts(products) {
     let res = []
     for(product of products){
-        let productCategory = await Category.findOne({where: {id: product.category_id}})
-        delete product.dataValues.category_id
+        let productCategory = await Category.findOne({where: {id: product.categoryId}})
+        delete product.dataValues.categoryId
         if(productCategory) product.dataValues.category = productCategory.dataValues
         res.push(product.dataValues)
     }
@@ -28,7 +29,7 @@ exports.getAllCategories = async (req, res) => {
 }
 
 exports.getAllProducts = async(req, res) => {
-    let products = await Product.findAll({attributes: ['name', 'description', 'price', 'category_id']})
+    let products = await Product.findAll({attributes: ['name', 'description', 'price', 'categoryId']})
     let productsToSend = []
     if(products.length){
         productsToSend = await formatProducts(products)
@@ -36,12 +37,19 @@ exports.getAllProducts = async(req, res) => {
     res.status(200).send(productsToSend)
 }
 
-exports.getAllCartProducts = (req, res) => {
-    
+exports.getAllCartProducts = async(req, res) => {
+    let productsToSend = []
+    let productsIds = await ProductCart.findAll({where: {cartId: req.query.cartId}})
+    let ids = productsIds.map(id => {
+        return id.dataValues.productId
+    })
+    let products = await Product.findAll({where: {id: ids}})
+    productsToSend = await formatProducts(products)
+    res.status(200).send(productsToSend)
 }
 
 exports.getMerchantProducts = async(req, res) => {
-    let products = await Product.find({where: {merchant_id: req.body.merchant_id}})
+    let products = await Product.findAll({where: {merchantId: req.query.merchantId}})
     let productsToSend = []
     if(products.length){
         productsToSend = await formatProducts(products)
@@ -49,18 +57,23 @@ exports.getMerchantProducts = async(req, res) => {
     res.status(200).send(productsToSend)
 }
 
-exports.getCategoryProducts = (req, res) => {
-
+exports.getCategoryProducts = async(req, res) => {
+    let products = await Product.findAll({where: {categoryId: req.query.categoryId}})
+    let productsToSend = []
+    if(products.length){
+        productsToSend = await formatProducts(products)
+    }
+    res.status(200).send(productsToSend)
 }
 
-exports.addProduct = (req, res) => {
+exports.addProduct = async (req, res) => {
     try {
         Product.create({
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            category_id: req.body.category,
-            merchant_id: req.user.id,
+            categoryId: req.body.categoryId,
+            merchantId: req.user.id,
         })
         res.status(200).send(true)
     }
@@ -105,14 +118,39 @@ exports.deleteCategory = (req, res) => {
     }
 }
 
+//productId, cartId
 exports.addProductToCart = (req, res) => {
-    
+    try {
+        ProductCart.create({
+            productId: req.body.productId,
+            cartId: req.body.cartId
+        })
+        res.status(200).send(true)
+    } catch(err) {
+        console.log(err)
+        res.status(500).send(false)
+    }
+
 }
 
 exports.deleteProductFromCart = (req, res) => {
-    
+    try {
+        ProductCart.destroy({where: {cartId: req.body.cartId, productId: req.body.productId}})
+        res.status(200).send(true)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).send(false)
+    }
 }
 
 exports.deleteAllFromCart = (req, res) => {
-    
+    try {
+        ProductCart.destroy({where: {cartId: req.body.cartId}})
+        res.status(200).send(true)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).send(false)
+    }
 }

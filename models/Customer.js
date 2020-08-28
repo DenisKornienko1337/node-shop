@@ -8,7 +8,7 @@ const Customer = sequelize.define('customer', {
     autoIncrement: true,
     allowNull: false
   },
-  cart_id: {
+  cartId: {
     type: Sequelize.INTEGER,
     allowNull: true
   },

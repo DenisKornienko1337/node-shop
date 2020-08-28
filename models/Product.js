@@ -9,15 +9,11 @@ const Product = sequelize.define('product', {
     autoIncrement: true,
     allowNull: false
   },
-  cart_id: {
-    type: Sequelize.INTEGER,
-    allowNull: true, 
-  },
-  merchant_id: {
+  merchantId: {
     type: Sequelize.INTEGER,
     allowNull: true
   },
-  category_id: {
+  categoryId: {
     type: Sequelize.INTEGER,
     allowNull: true
   },

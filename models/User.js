@@ -17,10 +17,10 @@ const User = sequelize.define('user', {
     type: Sequelize.TEXT,
     allowNull: true
   },
-  googleId: {
-    type: Sequelize.TEXT,
-    allowNull: true
-  },
+  cartId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  }
 }, {
     timestamps: false
 });

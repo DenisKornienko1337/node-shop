@@ -5,6 +5,7 @@ const passport = require('passport')
 const nodemailer = require('nodemailer')
 const axios = require('axios')
 const sendmail = require('sendmail')()
+const Cart = require('../models/Cart')
 
 async function addUser(username, password) {
     if(!username || !password) return false
@@ -17,11 +18,15 @@ async function addUser(username, password) {
           resolve(hash)
         });
       })
-      console.log('hash', hash)
-      User.create({
+    let newCart = await Cart.create({})
+    let newUser = await User.create({
         username: username,
         password: hash,
+        cartId: newCart.dataValues.id
     })
+    let updateCart = await Cart.findOne({where: {id: newCart.dataValues.id}})
+    updateCart.customerId = newUser.dataValues.id
+    updateCart.save()
     return true
 }
 
