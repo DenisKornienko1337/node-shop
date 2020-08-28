@@ -69,14 +69,14 @@ exports.logOut = (req, res) => {
 }
 
 exports.sendTempPass = async (req, res) => {
-    let isAdded = await addUser(req.query.email, req.query.password)
+    let isAdded = await addUser(req.query.username, req.query.password)
     console.log('isadded from sendmail', isAdded)
-    console.log('Req query email', req.query.email)
+    console.log('Req query email', req.query.username)
     if(!isAdded) res.status(500).send(false)
     if(isAdded) {
         let mailOpts = {
             from: 'd.kornienko1337@gmail.com',
-            to: req.query.email,
+            to: req.query.username,
             subject: 'Temp pass for Nuxt Shop',
             html: 'Your temp pass is:'+req.query.password,
           }

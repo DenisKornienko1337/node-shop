@@ -27,4 +27,12 @@ router.post('/delete-product', apiController.deleteProduct)
 
 router.post('/delete-category', apiController.deleteCategory)
 
+router.get('/user', (req, res) => {
+    res.send({
+      user: 'test',
+    })
+    res.status(200)
+    return true
+} )
+
 module.exports = router
