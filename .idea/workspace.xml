@@ -17,21 +17,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b9ce6727-a486-46d6-844b-d9753bbde2eb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_base.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/classes/CategoryClass.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/classes/CategoryClass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/classes/MailClass.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/classes/MailClass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/classes/UserClass.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/classes/UserClass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/is-secure-creds.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/is-secure-creds.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seeders/20200831183345-products.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -84,7 +84,8 @@
       <workItem from="1598894862313" duration="84000" />
       <workItem from="1598898359023" duration="129000" />
       <workItem from="1598898547211" duration="5589000" />
-      <workItem from="1598910912535" duration="2510000" />
+      <workItem from="1598910912535" duration="3509000" />
+      <workItem from="1598914714828" duration="2025000" />
     </task>
     <servers />
   </component>
@@ -164,13 +165,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="728" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598906465727" />
-    <state x="602" y="0" width="716" height="1040" key="find.popup" timestamp="1598912344088">
+    <state x="602" y="0" width="716" height="1040" key="find.popup" timestamp="1598916339154">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="602" y="0" width="716" height="1040" key="find.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598912344088" />
-    <state x="532" y="237" key="run.anything.popup" timestamp="1598907149334">
+    <state x="602" y="0" width="716" height="1040" key="find.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598916339154" />
+    <state x="532" y="237" key="run.anything.popup" timestamp="1598915150083">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="532" y="237" key="run.anything.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598907149334" />
+    <state x="532" y="237" key="run.anything.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598915150083" />
   </component>
 </project>
