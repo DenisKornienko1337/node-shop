@@ -7,28 +7,9 @@ const axios = require('axios')
 const sendmail = require('sendmail')()
 const Cart = require('../models/Cart')
 
-const UserController = require('../controllers/UserController')
-
-async function addUser(username, password, type, merchantName) {
-    const hash = await new Promise((resolve, reject) => {
-        bcrypt.hash(password, saltRounds, function(err, hash) {
-          if (err) reject(err)
-          resolve(hash)
-        });
-      })
-    let newCart = await Cart.create({})
-    let newUser = await User.create({
-        username: username,
-        password: hash,
-        cartId: newCart.dataValues.id,
-        type: type,
-    })
-    if(merchantName) newUser.merchantName = merchantName
-    let updateCart = await Cart.findOne({where: {id: newCart.dataValues.id}})
-    updateCart.customerId = newUser.dataValues.id
-    updateCart.save()
-    return true
-}
+const UserClass = require('./classes/UserClass')
+const MailClass = require('./classes/MailClass')
+const { config } = require('../config/config')
 
 exports.check = (req, res) => {
     res.send(true)
@@ -42,6 +23,8 @@ exports.logIn = (req, res, next) => {
         } else if (!user) {
           res.status(401).send(info);
           return
+        } else {
+            // next()
         }
         req.login(user, function(err){
             req.session.user = user
@@ -52,8 +35,8 @@ exports.logIn = (req, res, next) => {
 }
 
 exports.addUser = async (req, res) => {
-    let user = new UserController(req.body.username)
-    let isAdded= await user.add(
+    let isAdded = await UserClass.add(
+        req.body.username,
         req.body.password,
         req.body.type,
         req.body.merchantName
@@ -68,33 +51,24 @@ exports.logOut = (req, res) => {
 }
 
 exports.sendTempPass = async (req, res) => {
-    let isAdded = await addUser(req.query.username, req.query.password, req.query.type)
+    let isAdded = await UserClass.add(req.query.username, req.query.password, req.query.type)
     if(!isAdded) res.status(500).send(false)
     if(isAdded) {
-        let mailOpts = {
-            from: 'd.kornienko1337@gmail.com',
+        MailClass.send({
+            from: config.email,
             to: req.query.username,
             subject: 'Temp pass for Nuxt Shop',
             html: 'Your temp pass is:'+req.query.password,
-          }
-        sendmail(mailOpts, function(err) {
-              if(err){
-                  console.log('Error from mail!', err)
-                  return res.status(500).send(false)
-              }
-        })
+          })
     }
     res.status(200).send(true)
 }
 
 exports.changePassword = (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        User.update({password: hash}, {where: {username: req.user.username}})
-        .catch(err => {
-            console.log('Err update', err)
-            return res.sendStatus(500)
-        })
-        req.logout()
-        return res.sendStatus(200)
-    });
+    MailClass.send({
+        from: config.email,
+        to: req.body.username,
+        subject: 'Temp pass for Nuxt Shop',
+        html: 'Your temp pass is:'+req.body.password,
+      })
 }
