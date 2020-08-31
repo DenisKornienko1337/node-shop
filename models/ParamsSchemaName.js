@@ -1,18 +1,6 @@
-const Sequelize = require('sequelize');
+const {schema, additionales} = require('../schemas/ParamsSchemaName')
 const sequelize = require('../utils/dbconnect');
 
-const ParamsSchemaName = sequelize.define('params_schema_name', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false
-  },
-  name: {
-    type: Sequelize.STRING,
-  },
-}, {
-    timestamps: false
-});
+const ParamsSchemaName = sequelize.define('params_schema_name', schema, additionales);
 
 module.exports = ParamsSchemaName;

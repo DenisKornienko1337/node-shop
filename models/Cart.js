@@ -1,19 +1,6 @@
-const Sequelize = require('sequelize');
 const sequelize = require('../utils/dbconnect');
+const {schema, additionales} = require('../schemas/Cart')
 
-const Cart = sequelize.define('cart', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false
-  },
-  customerId: {
-    type: Sequelize.INTEGER,
-    allowNull: true
-  },
-}, {
-    timestamps: false
-});
+const Cart = sequelize.define('cart', schema, additionales);
 
 module.exports = Cart;
