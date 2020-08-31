@@ -23,12 +23,20 @@ module.exports = class CategoryClass {
         }
     }
     static async getAll(){
-        let categories = await Category.findAll({})
-        let categoriesNames = []
-        if(categories.length){
-            categories.map(category => {
-                categoriesNames.push(category.dataValues.name)
-            })
+        try {
+            let categories = await Category.findAll({})
+            let categoriesRes = []
+            if(categories.length){
+                categories.map(category => {
+                    categoriesRes.push(category.dataValues)
+                })
+            }
+            console.log(categoriesRes)
+            return categoriesRes
+        }
+        catch(err){
+            console.log('Err in categories getter', err)
+            return false
         }
     }
 }

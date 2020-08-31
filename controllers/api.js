@@ -20,14 +20,9 @@ async function formatProducts(products) {
 }
 
 exports.getAllCategories = async (req, res) => {
-    let categories = await Category.findAll({attributes: ['name']})
-    let categoriesNames = []
-    if(categories.length){
-        categories.map(category => {
-            categoriesNames.push(category.dataValues.name)
-        })
-    }
-    res.status(200).send(categoriesNames)
+    let categories = await CategoryClass.getAll()
+    if(!categories) res.status(500).send(false)
+    res.status(200).send(categories)
 }
 
 exports.getAllProducts = async(req, res) => {
