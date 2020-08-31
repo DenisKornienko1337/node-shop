@@ -1,23 +1,21 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/dbconnect');
 
-const Customer = sequelize.define('customer', {
+const ParamsSchemaValue = sequelize.define('params_schema_value', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
   },
-  cartId: {
-    type: Sequelize.INTEGER,
-    allowNull: true
-  },
-  name: {
+  value: {
     type: Sequelize.STRING,
-    allowNull: true
   },
+  paramNameId: {
+      type: Sequelize.INTEGER,
+  }
 }, {
     timestamps: false
 });
 
-module.exports = Customer;
+module.exports = ParamsSchemaValue;

@@ -3,13 +3,47 @@ const passport  = require('passport')
 const router  = express.Router()
 const authController = require('../controllers/auth.js')
 let isAuth = require('../middleware/auth')
-const isSecureCreds = require('../middleware/is-secure-creds')
+let isSecureCreds = require('../middleware/is-secure-creds')
+let isUserExists = require('../middleware/is-user-exists')
+
+const UserController = require('../controllers/UserController')
+const MailController = require('../controllers/MailController')
+
+router.post('/add-user', isUserExists, isSecureCreds, async (req, res) => {
+  let isAdded = await UserController.add(
+      req.body.username,
+      req.body.password,
+      req.body.type,
+      req.body.merchantName
+  )
+  if(!isAdded) res.status(500).send(false)
+  else res.status(200).send(true)
+})
+
+router.post('/login', (req, res) => {
+  UserController.login()
+})
+
+router.post('/change-pass', isAuth, isSecureCreds, (req, res) => {
+  if(UserController.changePassword()){
+    req.logout()
+    return res.status(200).send(true)
+  } else {
+    return res.status(500).send(false)
+  }
+})
+
+router.post('/send-temp-pass', (req, res) => {
+  MailController.send()
+})
+
+router.post('/logout', isAuth, (req, res) => {
+  req.logout()
+  return res.sendStatus(200)
+})
+
 
 router.get('/check', isAuth, authController.check)
-
-router.post('/add-user', isSecureCreds, authController.addUser)
-
-router.post('/login', authController.logIn)
 
 router.get('/user', (req, res) => {
   res.send({
@@ -26,9 +60,4 @@ router.get('/google',
     res.redirect('/');
   });
 
-router.get('/send-temp-pass', authController.sendTempPass)
-router.get('/logout', isAuth, authController.logOut)
-
-router.post('/change-pass', isAuth, isSecureCreds, authController.changePassword)
-
-  module.exports = router
+module.exports = router

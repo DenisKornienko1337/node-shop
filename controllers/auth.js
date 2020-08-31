@@ -7,11 +7,9 @@ const axios = require('axios')
 const sendmail = require('sendmail')()
 const Cart = require('../models/Cart')
 
-async function addUser(username, password) {
-    if(!username || !password) return false
-    let user = await User.findOne({where: {username: username}})
-    console.log('user', user)
-    if(user) return false
+const UserController = require('../controllers/UserController')
+
+async function addUser(username, password, type, merchantName) {
     const hash = await new Promise((resolve, reject) => {
         bcrypt.hash(password, saltRounds, function(err, hash) {
           if (err) reject(err)
@@ -22,8 +20,10 @@ async function addUser(username, password) {
     let newUser = await User.create({
         username: username,
         password: hash,
-        cartId: newCart.dataValues.id
+        cartId: newCart.dataValues.id,
+        type: type,
     })
+    if(merchantName) newUser.merchantName = merchantName
     let updateCart = await Cart.findOne({where: {id: newCart.dataValues.id}})
     updateCart.customerId = newUser.dataValues.id
     updateCart.save()
@@ -36,20 +36,14 @@ exports.check = (req, res) => {
 
 exports.logIn = (req, res, next) => {
     passport.authenticate('local', function (error, user, info) {
-        console.log(error)
-        console.log(user)
-        console.log(info)
         if (error) {
           res.status(401).send(error);
           return 
         } else if (!user) {
           res.status(401).send(info);
           return
-        } else {
-          //next();
         }
         req.login(user, function(err){
-            console.log(user)
             req.session.user = user
             console.log('req.session.user', req.session.user)
         })
@@ -58,7 +52,12 @@ exports.logIn = (req, res, next) => {
 }
 
 exports.addUser = async (req, res) => {
-    let isAdded= await addUser(req.body.username, req.body.password)
+    let user = new UserController(req.body.username)
+    let isAdded= await user.add(
+        req.body.password,
+        req.body.type,
+        req.body.merchantName
+    )
     if(!isAdded) res.status(500).send(false)
     else res.status(200).send(true)
 }
@@ -69,9 +68,7 @@ exports.logOut = (req, res) => {
 }
 
 exports.sendTempPass = async (req, res) => {
-    let isAdded = await addUser(req.query.username, req.query.password)
-    console.log('isadded from sendmail', isAdded)
-    console.log('Req query email', req.query.username)
+    let isAdded = await addUser(req.query.username, req.query.password, req.query.type)
     if(!isAdded) res.status(500).send(false)
     if(isAdded) {
         let mailOpts = {

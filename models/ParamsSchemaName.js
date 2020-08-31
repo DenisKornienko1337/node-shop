@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/dbconnect');
 
-const Category = sequelize.define('category', {
+const ParamsSchemaName = sequelize.define('params_schema_name', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -10,14 +10,9 @@ const Category = sequelize.define('category', {
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: true,
-    unique: true,
   },
-  paramsSchemaId: {
-    type: Sequelize.INTEGER,
-}
 }, {
     timestamps: false
 });
 
-module.exports = Category;
+module.exports = ParamsSchemaName;

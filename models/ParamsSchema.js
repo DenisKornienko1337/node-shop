@@ -1,19 +1,18 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/dbconnect');
 
-const Merchant = sequelize.define('merchant', {
+const ParamsSchema = sequelize.define('params_schema', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false
   },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: true
+  categoryId: {
+    type: Sequelize.INTEGER,
   },
 }, {
     timestamps: false
 });
 
-module.exports = Merchant;
+module.exports = ParamsSchema;
