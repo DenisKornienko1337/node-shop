@@ -3,7 +3,7 @@ const Cart = require('../../models/Cart')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 const passport = require('passport')
-const config = require('../../config/config').config
+const config = require('../../config/config_base').config
 const sendmail = require('sendmail')()
 
 module.exports = class UserClass {

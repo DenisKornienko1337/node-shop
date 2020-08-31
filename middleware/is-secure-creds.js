@@ -1,4 +1,4 @@
-const config = require('../config/config').config
+const config = require('../config/config_base').config
 
 module.exports = (req, res, next) => {
     if(!req.body.username || !req.body.password) return res.status(500).send(false)

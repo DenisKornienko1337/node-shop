@@ -9,7 +9,7 @@ const Cart = require('../models/Cart')
 
 const UserClass = require('./classes/UserClass')
 const MailClass = require('./classes/MailClass')
-const { config } = require('../config/config')
+const { config } = require('../config/config_base')
 
 exports.check = (req, res) => {
     res.send(true)

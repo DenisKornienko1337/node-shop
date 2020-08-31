@@ -1,5 +1,7 @@
 'use strict';
 
+const {schema,additionales} = require('../schemas/User')
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -10,10 +12,10 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-    */
+     */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable()
+      await queryInterface.createTable('users',schema,additionales)
       await transaction.commit();
     } catch (e){
       console.log(e)

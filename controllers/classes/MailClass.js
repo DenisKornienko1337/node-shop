@@ -1,4 +1,4 @@
-const config = require('../../config/config').config
+const config = require('../../config/config_base').config
 const sendmail = require('sendmail')()
 
 module.exports = class MailClass {

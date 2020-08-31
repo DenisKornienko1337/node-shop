@@ -1,4 +1,4 @@
-const config = require('../../config/config').config
+const config = require('../../config/config_base').config
 const Category = require('../../models/Category')
 
 module.exports = class CategoryClass {

@@ -5,7 +5,7 @@ const authController = require('../controllers/auth.js')
 let isAuth = require('../middleware/auth')
 let isSecureCreds = require('../middleware/is-secure-creds')
 let isUserExists = require('../middleware/is-user-exists')
-const config = require('../config/config').config
+const config = require('../config/config_base').config
 
 router.post('/add-user', isUserExists, isSecureCreds, authController.addUser)
 
