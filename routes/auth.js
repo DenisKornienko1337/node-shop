@@ -5,42 +5,17 @@ const authController = require('../controllers/auth.js')
 let isAuth = require('../middleware/auth')
 let isSecureCreds = require('../middleware/is-secure-creds')
 let isUserExists = require('../middleware/is-user-exists')
+const config = require('../config/config').config
 
-const UserController = require('../controllers/UserController')
-const MailController = require('../controllers/MailController')
+router.post('/add-user', isUserExists, isSecureCreds, authController.addUser)
 
-router.post('/add-user', isUserExists, isSecureCreds, async (req, res) => {
-  let isAdded = await UserController.add(
-      req.body.username,
-      req.body.password,
-      req.body.type,
-      req.body.merchantName
-  )
-  if(!isAdded) res.status(500).send(false)
-  else res.status(200).send(true)
-})
+router.post('/login', authController.logIn)
 
-router.post('/login', (req, res) => {
-  UserController.login()
-})
+router.post('/change-pass', isAuth, isSecureCreds, authController.changePassword)
 
-router.post('/change-pass', isAuth, isSecureCreds, (req, res) => {
-  if(UserController.changePassword()){
-    req.logout()
-    return res.status(200).send(true)
-  } else {
-    return res.status(500).send(false)
-  }
-})
+router.post('/send-temp-pass', authController.sendTempPass)
 
-router.post('/send-temp-pass', (req, res) => {
-  MailController.send()
-})
-
-router.post('/logout', isAuth, (req, res) => {
-  req.logout()
-  return res.sendStatus(200)
-})
+router.post('/logout', isAuth, authController.logOut)
 
 
 router.get('/check', isAuth, authController.check)

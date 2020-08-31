@@ -8,27 +8,7 @@ const sendmail = require('sendmail')()
 const Cart = require('../models/Cart')
 
 const UserController = require('../controllers/UserController')
-
-async function addUser(username, password, type, merchantName) {
-    const hash = await new Promise((resolve, reject) => {
-        bcrypt.hash(password, saltRounds, function(err, hash) {
-          if (err) reject(err)
-          resolve(hash)
-        });
-      })
-    let newCart = await Cart.create({})
-    let newUser = await User.create({
-        username: username,
-        password: hash,
-        cartId: newCart.dataValues.id,
-        type: type,
-    })
-    if(merchantName) newUser.merchantName = merchantName
-    let updateCart = await Cart.findOne({where: {id: newCart.dataValues.id}})
-    updateCart.customerId = newUser.dataValues.id
-    updateCart.save()
-    return true
-}
+const MailController = require('../controllers/MailController')
 
 exports.check = (req, res) => {
     res.send(true)
@@ -42,6 +22,8 @@ exports.logIn = (req, res, next) => {
         } else if (!user) {
           res.status(401).send(info);
           return
+        } else {
+            // next()
         }
         req.login(user, function(err){
             req.session.user = user
@@ -52,8 +34,8 @@ exports.logIn = (req, res, next) => {
 }
 
 exports.addUser = async (req, res) => {
-    let user = new UserController(req.body.username)
-    let isAdded= await user.add(
+    let isAdded = await UserController.add(
+        req.body.username,
         req.body.password,
         req.body.type,
         req.body.merchantName
@@ -88,13 +70,10 @@ exports.sendTempPass = async (req, res) => {
 }
 
 exports.changePassword = (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        User.update({password: hash}, {where: {username: req.user.username}})
-        .catch(err => {
-            console.log('Err update', err)
-            return res.sendStatus(500)
-        })
-        req.logout()
-        return res.sendStatus(200)
-    });
+    MailController.send({
+        from: config.email,
+        to: req.body.username,
+        subject: 'Temp pass for Nuxt Shop',
+        html: 'Your temp pass is:'+req.body.password,
+      })
 }
