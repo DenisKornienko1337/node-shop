@@ -7,8 +7,9 @@ const axios = require('axios')
 const sendmail = require('sendmail')()
 const Cart = require('../models/Cart')
 
-const UserController = require('../controllers/UserController')
-const MailController = require('../controllers/MailController')
+const UserClass = require('../controllers/classes/UserClass')
+const MailClass = require('../controllers/classes/MailClass')
+const { config } = require('../config/config')
 
 exports.check = (req, res) => {
     res.send(true)
@@ -34,7 +35,7 @@ exports.logIn = (req, res, next) => {
 }
 
 exports.addUser = async (req, res) => {
-    let isAdded = await UserController.add(
+    let isAdded = await UserClass.add(
         req.body.username,
         req.body.password,
         req.body.type,
@@ -50,27 +51,21 @@ exports.logOut = (req, res) => {
 }
 
 exports.sendTempPass = async (req, res) => {
-    let isAdded = await addUser(req.query.username, req.query.password, req.query.type)
+    let isAdded = await UserClass.add(req.query.username, req.query.password, req.query.type)
     if(!isAdded) res.status(500).send(false)
     if(isAdded) {
-        let mailOpts = {
-            from: 'd.kornienko1337@gmail.com',
+        MailClass.send({
+            from: config.email,
             to: req.query.username,
             subject: 'Temp pass for Nuxt Shop',
             html: 'Your temp pass is:'+req.query.password,
-          }
-        sendmail(mailOpts, function(err) {
-              if(err){
-                  console.log('Error from mail!', err)
-                  return res.status(500).send(false)
-              }
-        })
+          })
     }
     res.status(200).send(true)
 }
 
 exports.changePassword = (req, res) => {
-    MailController.send({
+    MailClass.send({
         from: config.email,
         to: req.body.username,
         subject: 'Temp pass for Nuxt Shop',

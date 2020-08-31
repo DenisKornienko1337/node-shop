@@ -1,4 +1,4 @@
-module.exports = class ProductController {
+module.exports = class ProductClass {
     constructor(){
 
     }

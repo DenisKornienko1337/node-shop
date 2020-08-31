@@ -1,7 +1,7 @@
-const config = require('../config/config').config
+const config = require('../../config/config').config
 const sendmail = require('sendmail')()
 
-module.exports = class MailController {
+module.exports = class MailClass {
     static send(msg){
         sendmail(msg, function(err) {
             if(err){

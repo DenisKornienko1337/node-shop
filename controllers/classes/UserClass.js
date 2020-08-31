@@ -1,12 +1,12 @@
-const User = require('../models/User')
-const Cart = require('../models/Cart')
+const User = require('../../models/User')
+const Cart = require('../../models/Cart')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 const passport = require('passport')
-const config = require('../config/config').config
+const config = require('../../config/config').config
 const sendmail = require('sendmail')()
 
-module.exports = class UserController {
+module.exports = class UserClass {
     static async add(username, password, type, merchantName){
         try {
             let hash = await this.makeHash(password)
