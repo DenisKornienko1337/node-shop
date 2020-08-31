@@ -7,8 +7,8 @@ const axios = require('axios')
 const sendmail = require('sendmail')()
 const Cart = require('../models/Cart')
 
-const UserClass = require('../controllers/classes/UserClass')
-const MailClass = require('../controllers/classes/MailClass')
+const UserClass = require('./classes/UserClass')
+const MailClass = require('./classes/MailClass')
 const { config } = require('../config/config')
 
 exports.check = (req, res) => {

@@ -4,6 +4,10 @@ const Product = require('../models/Product')
 const User = require('../models/User')
 const ProductCart = require('../models/ProductCart')
 
+//Classes
+const ProductClass = require('./classes/ProductClass')
+const CategoryClass = require('./classes/CategoryClass')
+
 async function formatProducts(products) {
     let res = []
     for(product of products){
@@ -93,27 +97,11 @@ exports.deleteProduct = (req, res) => {
 }
 
 exports.addCategory = (req, res) => {
-    try {
-        Category.create({
-            name: req.body.name,
-        })
-        res.status(200).send(true)
-    }
-    catch(err) {
-        console.log('Error adding category!', err)
-        res.status(500).send(false)
-    }
+    CategoryClass.add(req.body.name) ? res.status(200).send(true) : res.status(500).send(false)
 }
 
 exports.deleteCategory = (req, res) => {
-    try {
-        Category.destroy({where: {name: req.body.name}})
-        res.status(200).send(true)
-    }
-    catch(err) {
-        console.log('Error deliting category!', err)
-        res.status(500).send(false)
-    }
+    CategoryClass.delete(req.body.id) ? res.status(200).send(true): res.status(500).send(false)
 }
 
 //productId, cartId
