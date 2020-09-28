@@ -120,6 +120,13 @@ function(accessToken, refreshToken, profile, done) {
 ));
 
 
-app.listen(process.env.DB_PORT, () => {
+// app.listen(process.env.DB_PORT, () => {
 
-})
+// })
+sequelize
+    // .sync({ force: true})
+    .sync()
+    .then(() => {
+        app.listen(process.env.DB_PORT);
+    })
+    .catch( err => console.log(err) );

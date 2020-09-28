@@ -8,9 +8,8 @@ module.exports = {
       autoIncrement: true,
       allowNull: false
     },
-    customerId: {
-      type: Sequelize.INTEGER,
-      allowNull: true
+    value: {
+      type: Sequelize.STRING,
     },
   },
   additionales: {
