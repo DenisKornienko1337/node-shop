@@ -1,6 +1,8 @@
 /**
  * @modules
  */
+require('dotenv').config()
+
 const express        = require('express')
 const app            = express()
 const Sequelize = require('sequelize');
@@ -117,6 +119,6 @@ function(accessToken, refreshToken, profile, done) {
 }
 ));
 
-app.listen(8081, () => {
+app.listen(process.env.DB_PORT, () => {
 
 })
