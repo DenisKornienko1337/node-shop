@@ -12,7 +12,7 @@ async function formatProducts(products) {
   return res
 }
 
-exports.getAllProducts = async(req, res) => {
+exports.getAll = async(req, res) => {
   let products = await Product.findAll({attributes: ['name', 'description', 'price', 'categoryId']})
   let productsToSend = []
   if(products.length){
@@ -21,7 +21,7 @@ exports.getAllProducts = async(req, res) => {
   res.status(200).send(productsToSend)
 }
 
-exports.addProduct = async (req, res) => {
+exports.add = async (req, res) => {
   try {
       Product.create({
           name: req.body.name,
@@ -38,7 +38,7 @@ exports.addProduct = async (req, res) => {
   }
 }
 
-exports.deleteProduct = (req, res) => {
+exports.delete = (req, res) => {
   try {
       Product.destroy({where: {id: req.body.id}})
       res.status(200).send(true)

@@ -7,15 +7,15 @@ const {
   MerchantProductsController
 } = require('../controllers/index')
 
-router.post('/delete-product', ProductsController.deleteProduct)
+router.post('/delete-product', ProductsController.delete)
 
-router.get('/get-all-products', ProductsController.getAllProducts)
+router.get('/get-all-products', ProductsController.getAll)
 
 router.get('/get-cart-products', ProductsController.getAllCartProducts)
 
 router.get('/get-merchant-products', MerchantProductsController.getMerchantProducts)
 
-router.post('/add-product', ProductsController.addProduct)
+router.post('/add-product', ProductsController.add)
 
 router.post('/add-product-to-cart', CartController.addProductToCart)
 
