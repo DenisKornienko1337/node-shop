@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = {
   schema: {
+    // Customer schema
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -30,7 +31,34 @@ module.exports = {
     isAdmin: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
-    }
+    },
+    // Customer fields
+    // personal 
+    name:  {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    surname:  {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    birthday:  {
+      type: Sequelize.DATE,
+      allowNull: true,
+    },
+    sex:  {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    // contacts
+    phone:  {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    gmail:  {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }, 
   },
   additionales: {
     timestamps: false
