@@ -6,7 +6,6 @@ const {
 } = require('../controllers/index')
 let isAuth = require('../middleware/auth')
 
-router.get('/get-all-categories', CategoriesController.getAllCategories)
 
 router.post('/delete-all-from-cart', CartController.deleteAllFromCart)
 
