@@ -70,10 +70,16 @@ app.use(passport.session()); // persistent login sessions
 app.use(passport.initialize());
 app.use(passport.session());
 
-const authRoutes = require('./routes/auth')
-const apiRoutes = require('./routes/api')
-app.use('/auth', authRoutes)
-app.use('/api', apiRoutes)
+
+const {
+  ApiRouter, AuthRouter, 
+  CategoriesRouter, ProductsRouter
+} = require('./routes/index')
+
+app.use('/api', ApiRouter)
+app.use('/api/auth', AuthRouter)
+app.use('/api/categories', CategoriesRouter)
+app.use('/api/products', ProductsRouter)
 
 passport.serializeUser((user, done) => {
   done(null, user)
