@@ -25,7 +25,7 @@ exports.deleteProductFromCart = (req, res) => {
   }
 }
 
-exports.deleteAllFromCart = (req, res) => {
+exports.deleteAll = (req, res) => {
   try {
       ProductCart.destroy({where: {cartId: req.body.cartId}})
       res.status(200).send(true)
