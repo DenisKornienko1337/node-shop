@@ -12,7 +12,7 @@ async function formatProducts(products) {
   return res
 }
 
-exports.getAll = async(req, res) => {
+exports.index = async(req, res) => {
   let products = await Product.findAll({attributes: ['name', 'description', 'price', 'categoryId']})
   let productsToSend = []
   if(products.length){
@@ -21,7 +21,7 @@ exports.getAll = async(req, res) => {
   res.status(200).send(productsToSend)
 }
 
-exports.add = async (req, res) => {
+exports.create = async (req, res) => {
   try {
       Product.create({
           name: req.body.name,
